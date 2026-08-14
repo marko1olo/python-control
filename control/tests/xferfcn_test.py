@@ -28,6 +28,21 @@ class TestXferFcn:
 
     # Tests for raising exceptions.
 
+    def test_zpk_complex_dtypes(self):
+        """Test zpk with complex64 and complex128 zeros/poles (Issue #1188)."""
+        P = ct.rss(5)
+        q1 = ct.zpk(zeros=P.zeros().astype(np.complex64),
+                    poles=P.poles().astype(np.complex64),
+                    gain=1, dt=0)
+        assert isinstance(q1, ct.TransferFunction)
+        assert "s^5" in str(q1)
+
+        q2 = ct.zpk(zeros=P.zeros().astype(np.complex128),
+                    poles=P.poles().astype(np.complex128),
+                    gain=1, dt=0)
+        assert isinstance(q2, ct.TransferFunction)
+        assert "s^5" in str(q2)
+
     def test_constructor_bad_input_type(self):
         """Give the constructor invalid input types."""
         # Single argument of the wrong type
