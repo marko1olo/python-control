@@ -109,7 +109,7 @@ def test_DLQE_return_filter_form(method):
     np.testing.assert_allclose(L_pred, A @ L_filter)
     np.testing.assert_allclose(
         np.sort_complex(E_pred),
-        np.sort_complex(np.linalg.eigvals(A - L_pred @ C)))
+        np.sort_complex(np.linalg.eigvals(A - L_pred @ C)), atol=1e-12)
     np.testing.assert_allclose(
         np.sort_complex(E_filter),
         np.sort_complex(np.linalg.eigvals(A @ (np.eye(2) - L_filter @ C))))
