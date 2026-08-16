@@ -1378,8 +1378,9 @@ def _tf_polynomial_to_string(coeffs, var='s'):
     """Convert a transfer function polynomial to a string."""
     thestr = "0"
 
-    # Convert coefficients to Python list of floats/numbers
-    coeffs = np.asarray(coeffs).tolist()
+    # Apply NumPy formatting
+    with np.printoptions(threshold=sys.maxsize):
+        coeffs = eval(repr(coeffs))
 
     # Compute the number of coefficients
     N = len(coeffs) - 1
