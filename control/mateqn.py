@@ -14,7 +14,7 @@ import warnings
 
 import numpy as np
 import scipy as sp
-from numpy import eye, finfo, inexact
+from numpy import eye
 from scipy.linalg import eigvals, solve
 
 from .exception import ControlArgument, ControlDimension, ControlSlycot, \
@@ -69,7 +69,7 @@ def _warn_ill_conditioned_E(E):
     not measurably more accurate in that regime.
     """
     condE = np.linalg.cond(E)
-    if condE > 1.0 / np.sqrt(finfo(float).eps):
+    if condE > 1.0 / np.sqrt(np.finfo(float).eps):
         warnings.warn(
             f"E is ill-conditioned (cond(E) = {condE:.2g}); the generalized "
             "Lyapunov solution may have reduced accuracy.  The problem itself "
@@ -383,7 +383,7 @@ def dlyap(A, Q, C=None, E=None, method=None):
             # Solvability requires lam_A * lam_Q != 1 for all pairs of
             # eigenvalues (the diagonals of the triangular factors)
             if np.min(np.abs(np.outer(np.diag(Tq), np.diag(Ta)) - 1.)) \
-                    < finfo(float).eps * max(
+                    < np.finfo(float).eps * max(
                         1., np.abs(np.diag(Ta)).max()
                         * np.abs(np.diag(Tq)).max()):
                 raise ControlArgument(
@@ -787,8 +787,7 @@ def _check_shape(M, n, m, square=False, symmetric=False, name="??"):
 # Utility function to check if a matrix is symmetric
 def _is_symmetric(M):
     M = np.atleast_2d(M)
-    if isinstance(M[0, 0], inexact):
-        eps = finfo(M.dtype).eps
-        return ((M - M.T) < eps).all()
+    if issubclass(M.dtype.type, (np.inexact, float, complex)):
+        return np.allclose(M, M.conj().T)
     else:
         return (M == M.T).all()

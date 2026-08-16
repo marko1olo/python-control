@@ -44,6 +44,25 @@ from control.exception import ControlArgument, ControlDimension
 
 
 class TestMatrixEquations:
+
+    def test_is_symmetric_robustness(self):
+        """Test _is_symmetric with scale-aware tolerance and asymmetric matrices (Issue #1174)."""
+        from control.mateqn import _is_symmetric
+        # Truly symmetric
+        M_sym = array([[1.0, 2.0], [2.0, 1.0]])
+        assert _is_symmetric(M_sym)
+
+        # Scale-aware numerical roundoff symmetry
+        M_roundoff = array([[1e6, 2.0 + 1e-12], [2.0, 1e6]])
+        assert _is_symmetric(M_roundoff)
+
+        # Asymmetric with negative difference (previously failed due to missing abs())
+        M_asym = array([[1.0, 0.0], [10.0, 1.0]])
+        assert not _is_symmetric(M_asym)
+
+        # Complex Hermitian matrix
+        M_herm = array([[1.0, 1.0 - 2.0j], [1.0 + 2.0j, 3.0]])
+        assert _is_symmetric(M_herm)
     """These are tests for the matrix equation solvers in mateqn.py"""
 
     @pytest.mark.parametrize('method',
