@@ -625,7 +625,7 @@ class TransferFunction(LTI):
             num = deepcopy(self.num_array)
             for i in range(self.noutputs):
                 for j in range(self.ninputs):
-                    num[i, j] *= other
+                    num[i, j] = num[i, j] * other
             return TransferFunction(
                 num, self.den, self.dt,
                 inputs=self.input_labels, outputs=self.output_labels)
@@ -679,7 +679,7 @@ class TransferFunction(LTI):
             num = deepcopy(self.num_array)
             for i in range(self.noutputs):
                 for j in range(self.ninputs):
-                    num[i, j] *= other
+                    num[i, j] = num[i, j] * other
             return TransferFunction(
                 num, self.den, self.dt,
                 inputs=self.input_labels, outputs=self.output_labels)
