@@ -205,10 +205,8 @@ def dlqe(*args, **kwargs):
     .. math:: x_e[n+1] = A x_e[n] + B u[n] + L(y[n] - C x_e[n] - D u[n])
 
     produces a state estimate x_e[n] that minimizes the mean squared
-    estimation error x[n] - x_e[n] using the sensor measurements y. If
-    `return_filter_form` is True, `dlqe` instead returns the filter-form
-    correction gain whose corresponding predictor gain is `A L`. The noise
-    cross-correlation `NN` is set to zero when omitted.
+    estimation error x[n] - x_e[n] using the sensor measurements y. The
+    noise cross-correlation `NN` is set to zero when omitted.
 
     Parameters
     ----------
