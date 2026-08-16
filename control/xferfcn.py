@@ -1379,6 +1379,7 @@ def _tf_polynomial_to_string(coeffs, var='s'):
     thestr = "0"
 
     # Apply NumPy formatting
+    coeffs = np.asarray(coeffs, dtype=float)
     with np.printoptions(threshold=sys.maxsize):
         coeffs = eval(repr(coeffs))
 
